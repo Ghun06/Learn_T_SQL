@@ -30,13 +30,6 @@ ON  ft19.scenario_id = ds.scenario_id
 WHERE MONTH (transaction_time) = 1 -- AND YEAR (transaction_time) = 2019 (mỗi bảng fact chỉ lưu dữ liệu của 1 năm duy nhất)
 AND transaction_type != 'Payment'
 
--- Lesson3 OPTIONAL 
-/*
-Retrieve a report that includes the following information: customer_id, transaction_id, scenario_id, transaction_type, category, payment_method. These transactions must meet the following conditions: 
-●	Were created from Jan to June 2019
-●	Had category type is shopping
-●	Were paid by Bank account
-*/
 SELECT customer_id, transaction_id, ds.scenario_id, transaction_type
        , sub_category, category, payment_method
 FROM dbo.fact_transaction_2019 ft19
@@ -44,8 +37,16 @@ JOIN dbo.dim_scenario ds
 ON  ft19.scenario_id = ds.scenario_id
 JOIN dbo.dim_payment_channel dpc
 ON ft19.payment_channel_id = dpc.payment_channel_id
-WHERE MONTH (transaction_time) BETWEEN 1 AND 6 
+WHERE MONTH (transaction_time) >= 1 AND MONTH (transaction_time) <= 6 
 AND category = 'Shopping' AND payment_method = 'Bank account'
+
+-- Lesson3 OPTIONAL 
+/*
+Retrieve a report that includes the following information: customer_id, transaction_id, scenario_id, transaction_type, category, payment_method. These transactions must meet the following conditions: 
+●	Were created from Jan to June 2019
+●	Had category type is shopping
+●	Were paid by Bank account
+*/
 
 SELECT customer_id, transaction_id, ds.scenario_id 
        , payment_method, payment_platform
@@ -77,28 +78,16 @@ AND payment_platform = 'android'
 Hãy tìm các giao dịch trong năm 2020 không áp dụng những ưu đãi của nhóm khách hàng đã từng giao dịch vào tháng 01/2019 được hưởng chương trình khuyến mãi với hoá đơn thanh toán thuộc loại tiền điện. 
 Thông tin hiển thị bao gồm: transaction_id, customer_id, scenario_id, sub_category, charged_amount, thời gian giao dịch theo định dạng YYYY.MM.DD sắp xếp kết quả theo mã khách hàng tăng dần
 */
-SELECT ft20.transaction_id, ft20.customer_id, ft20.scenario_id, sub_category, charged_amount, FORMAT(transaction_time, 'yyyy.MM.dd') transaction_time
-FROM dbo.fact_transaction_2020 ft20
-JOIN dbo.dim_scenario ds
-ON  ft20.scenario_id = ds.scenario_id
-JOIN dbo.dim_payment_channel dpc
-ON ft20.payment_channel_id = dpc.payment_channel_id
-JOIN dbo.dim_platform dp
-ON ft20.platform_id = dp.platform_id
-WHERE ft20.customer_id NOT IN (
-       SELECT ft19.customer_id
-       FROM dbo.fact_transaction_2019 ft19
-       JOIN dbo.dim_scenario ds
-       ON  ft19.scenario_id = ds.scenario_id
-       JOIN dbo.dim_payment_channel dpc
-       ON ft19.payment_channel_id = dpc.payment_channel_id
-       JOIN dbo.dim_platform dp
-       ON ft19.platform_id = dp.platform_id
-       WHERE MONTH (transaction_time) = 1 
-       AND sub_category = 'Electricity bill'
-)
-ORDER BY ft20.customer_id ASC
--- 717,835 rows
+SELECT *
+FROM fact_transaction_2020
+WHERE promotion_id = '0'
+AND customer_id IN ( SELECT DISTINCT customer_id
+FROM fact_transaction_2019 AS fact_19
+JOIN dim_scenario AS scena
+ON fact_19.scenario_id = scena.scenario_id
+WHERE promotion_id <> '0'
+AND sub_category = 'electricity'
+AND MONTH (transaction_time) = 1)
 
 /*
  Hiển thị thông tin: customer_id, transaction_id, scenario_id, payment_method and payment_platform. Những giao dịch này thoả mãn các điều kiện sau: (Hard)
