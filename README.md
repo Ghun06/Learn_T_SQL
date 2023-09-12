@@ -1,15 +1,23 @@
 # Learn_T_SQL And Dataset 
 Dataset: Adventureworks Description: (Microsoft Learn)
 
-●	The fact_transaction table is the main table in the database. It stores information about all the transactions made through Paytm Wallet.
+●	SalesOrderDetail - This table stores information about the details of each sales order. The fields in this table include the sales order ID, order date, due date, order quantity, product ID, unit price, unit price discount, error line, line total, and error message.
 
-●	The dim_scenario table provides a detailed description of the transaction types. For example, a payment transaction can be a recharge, bill payment, or shopping transaction.
+●	ProductModel - This table stores information about product models. The fields in this table include the product model ID, name, catalog description, and rowguid.
 
-●	The dim_payment_channel table provides a detailed description of the payment methods used. For example, a payment can be made through UPI, credit card, or debit card.
+●	SalesOrderHeader - This table stores information about the header of each sales order. The fields in this table include the sales order ID, revision number, ship date, status, name, online order flag, product number, culture, sales order number, color, purchase order number, account number, customer ID, standard cost, list price, size, weight, ship to address ID, bill to address ID, product category ID, product model ID, ship method, credit card approval code, subtotal, tax Amt, freight, total due, thumbnail photo, thumbnail photo file name, and comment.
 
-●	The dim_platform table provides a detailed description of the payment devices used. For example, a payment can be made through a mobile phone, a desktop computer, or a tablet.
+●	ProductDescription - This table stores information about product descriptions. The fields in this table include the product description ID, sell start date, description, sell end date, discontinue date, and rowguid.
 
-●	The dim_status table provides a detailed description of the results of the transaction. For example, a transaction can be successful, failed, or pending.
+●	SalesOrderHeader - This table stores information about the header of each sales order. The fields in this table include the sales order ID, revision number, ship date, status, name, online order flag, product number, culture, sales order number, color, purchase order number, account number, customer ID, standard cost, list price, size, weight, ship to address ID, bill to address ID, product category ID, product model ID, ship method, credit card approval code, subtotal, tax Amt, freight, total due, thumbnail photo, thumbnail photo file name, and comment.
+
+●	ProductDescription - This table stores information about product descriptions. The fields in this table include the product description ID, sell start date, description, sell end date, discontinued date, and rowguid.
+
+●	ProductCategory - This table stores information about product categories. The fields in this table include the product category ID and parent product category ID.
+
+●	Customer - This table stores information about customers. The fields in this table include the customer ID, name style, address line 1, name, title, address line 2, first name, middle name, last name, country region, suffix, postal code, company name, and rowguid.
+
+●	CustomerAddress - This table stores the relationship between customers and addresses. The fields in this table include the customer ID, address ID, salesperson, modified date, email address, phone, and address type.
 
 ![image](https://github.com/Ghun06/Learn_T_SQL/assets/95094186/d23a00fe-10ec-489c-a902-36d6e2a4a4bb)
 
