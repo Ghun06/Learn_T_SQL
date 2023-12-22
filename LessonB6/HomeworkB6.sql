@@ -124,9 +124,9 @@ GROUP BY YEAR(transaction_time), MONTH(transaction_time), sub_category
 -- Cach 1: Sử dụng SUM kết hợp với CASE WHEN Ví dụ:  SUM( CASE WHEN … THEN … ELSE …)
 
 SELECT YEAR(transaction_time) AS [year], MONTH(transaction_time) AS [month]
-    , SUM(CASE WHEN sub_category = 'Electricity' THEN 1 ELSE 0 END) AS electricity_trans
-    , SUM(CASE WHEN sub_category = 'Internet' THEN 1 ELSE 0 END) AS internet_trans
-    , SUM(CASE WHEN sub_category = 'Water' THEN 1 ELSE 0 END) AS water_trans
+    , SUM(IIF(sub_category = 'Electricity', 1, 0)) AS electricity_trans
+    , SUM(IIF(sub_category = 'Internet', 1, 0)) AS internet_trans
+    , SUM(IIF(sub_category = 'Water', 1, 0)) AS water_trans
 FROM fact_transaction_2019 as fact19
 JOIN dim_scenario AS scena
 ON fact19.scenario_id = scena.scenario_id
@@ -134,9 +134,9 @@ WHERE status_id = 1 AND category = 'Billing'
 GROUP BY YEAR(transaction_time), MONTH(transaction_time)
 UNION
 SELECT YEAR(transaction_time) AS [year], MONTH(transaction_time) AS [month]
-    , SUM(CASE WHEN sub_category = 'Electricity' THEN 1 ELSE 0 END) AS electricity_trans
-    , SUM(CASE WHEN sub_category = 'Internet' THEN 1 ELSE 0 END) AS internet_trans
-    , SUM(CASE WHEN sub_category = 'Water' THEN 1 ELSE 0 END) AS water_trans
+    , SUM(IIF(sub_category = 'Electricity', 1, 0)) AS electricity_trans
+    , SUM(IIF(sub_category = 'Internet', 1, 0)) AS internet_trans
+    , SUM(IIF(sub_category = 'Water', 1, 0)) AS water_trans
 FROM fact_transaction_2020 as fact20
 JOIN dim_scenario AS scena
 ON fact20.scenario_id = scena.scenario_id
